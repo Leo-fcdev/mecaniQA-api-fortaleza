@@ -3,7 +3,6 @@ package br.com.mecaniQA.api.controlllers;
 import br.com.mecaniQA.api.models.Servico;
 import br.com.mecaniQA.api.repositories.ServicoRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
