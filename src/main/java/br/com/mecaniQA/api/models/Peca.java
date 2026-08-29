@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class Peca {
 
-    private long id;
+    private Long id;
     private String nome;
     private String codigoDeBarras;
     private String fornecedor;
@@ -16,6 +16,9 @@ public class Peca {
     private CategoriaPeca categoriaPeca;
     private String cor;
     private String tamanho;
+
+    public Peca() {
+    }
 
     public void setNome(String nome) {
         this.nome = nome;
@@ -45,7 +48,7 @@ public class Peca {
         return dataCadastro;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -81,7 +84,7 @@ public class Peca {
         return categoriaPeca;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -93,7 +96,7 @@ public class Peca {
         this.dataUltimaAtualizacao = dataUltimaAtualizacao;
     }
 
-    public Peca(long id, String nome, String codigoDeBarras, String fornecedor, double precoVenda, double precoCusto, CategoriaPeca categoriaPeca) {
+    public Peca(Long id, String nome, String codigoDeBarras, String fornecedor, double precoVenda, double precoCusto, CategoriaPeca categoriaPeca) {
         this.id = id;
         this.nome = nome;
         this.codigoDeBarras = codigoDeBarras;
