@@ -38,7 +38,7 @@ public class ServicoController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PutMapping("/{ìd}")
+    @PutMapping("/{id}")
     public ResponseEntity<Servico> atualizar(@PathVariable long id, @RequestBody Servico servico) {
         Servico servicoAtualizado = repository.atualizar(id, servico);
         if (servicoAtualizado != null) {
