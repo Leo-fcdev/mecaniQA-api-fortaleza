@@ -3,7 +3,6 @@ package br.com.mecaniQA.api.controlllers;
 import br.com.mecaniQA.api.models.Peca;
 import br.com.mecaniQA.api.repositories.PecaRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/pecas")
 public class PecaController {
 
-    private PecaRepository repository = PecaRepository.getInstance();
+    private PecaRepository repository =  PecaRepository.getInstance();
 
     @PostMapping
     public ResponseEntity<Peca> cadastrar(@RequestBody Peca peca) {
