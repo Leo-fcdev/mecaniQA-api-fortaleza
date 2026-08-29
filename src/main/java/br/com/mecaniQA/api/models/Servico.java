@@ -4,18 +4,18 @@ import java.time.LocalDateTime;
 
 public class Servico {
 
-    private long id;
+    private Long id;
     private String nomeServico;
     private int tempoEstimado;
     private double custoTabelado;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataUltimaAtualizacao;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -59,7 +59,7 @@ public class Servico {
         return dataUltimaAtualizacao;
     }
 
-    public Servico(long id, String nomeServico, int tempoEstimado, double custoTabelado) {
+    public Servico(Long id, String nomeServico, int tempoEstimado, double custoTabelado) {
         this.id = id;
         this.nomeServico = nomeServico;
         this.tempoEstimado = tempoEstimado;
