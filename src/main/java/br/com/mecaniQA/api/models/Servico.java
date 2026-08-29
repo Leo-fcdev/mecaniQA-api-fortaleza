@@ -1,4 +1,4 @@
-package models;
+package br.com.mecaniQA.api.models;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,7 @@ public class Servico {
     private String nomeServico;
     private int tempoEstimado;
     private double custoTabelado;
-    private LocalDateTime dataCriacao;
+    private LocalDateTime dataCadastro;
     private LocalDateTime dataUltimaAtualizacao;
 
     public long getId() {
@@ -19,8 +19,8 @@ public class Servico {
         this.id = id;
     }
 
-    public void setDataCriacao(LocalDateTime dataCriacao) {
-        this.dataCriacao = dataCriacao;
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     public String getNomeServico() {
@@ -51,8 +51,8 @@ public class Servico {
         return custoTabelado;
     }
 
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
     }
 
     public LocalDateTime getDataUltimaAtualizacao() {

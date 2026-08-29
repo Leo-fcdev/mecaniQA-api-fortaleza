@@ -29,7 +29,7 @@ public class ServicoRepository {
     //Create
     public Servico salvar(Servico servico){
         servico.setId(contadorId++);
-        servico,setDataCadastro(LocalDateTime.now());
+        servico.setDataCadastro(LocalDateTime.now());
         servico.setDataUltimaAtualizacao(LocalDateTime.now());
 
         this.servicos.add(servico);

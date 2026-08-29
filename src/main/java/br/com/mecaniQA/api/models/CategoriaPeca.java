@@ -1,4 +1,4 @@
-package models;
+package br.com.mecaniQA.api.models;
 
 public enum CategoriaPeca {
 

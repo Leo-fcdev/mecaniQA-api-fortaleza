@@ -1,6 +1,6 @@
 package br.com.mecaniQA.api.repositories;
 
-import br.com.mecaniQA.api.models.Peca
+import br.com.mecaniQA.api.models.Peca;
 import java.util.ArrayList;
 import java.util.List;
 
