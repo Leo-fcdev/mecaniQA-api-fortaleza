@@ -1,4 +1,4 @@
-package models;
+package br.com.mecaniQA.api.models;
 
 import java.time.LocalDateTime;
 
