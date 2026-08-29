@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/pecas")
 public class PecaController {
 
-    private PecaRepository repository =  PecaRepository.getInstance();
+    private PecaRepository repository = PecaRepository.getInstance();
 
     @PostMapping
     public ResponseEntity<Peca> cadastrar(@RequestBody Peca peca) {
