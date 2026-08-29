@@ -1,0 +1,311 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: API mecanicQA
+meta:
+  id: wrk_951d74d8a48445d1ab773ca93e18ae19
+  created: 1788027402191
+  modified: 1788027402191
+  description: ""
+collection:
+  - name: Serviços / API mecanicQA
+    meta:
+      id: fld_2c03d1145e8844838bf388ee782fbf75
+      created: 1788026459117
+      modified: 1788027351534
+      sortKey: -1788026456758
+      description: ""
+    children:
+      - url: http://localhost:8080/api/servicos
+        name: Criar Serviço
+        meta:
+          id: req_655329b7e80941079e068edad0fdd0fd
+          created: 1788026459119
+          modified: 1788026459119
+          isPrivate: false
+          description: ""
+          sortKey: -1788026456757
+        method: POST
+        body:
+          mimeType: application/json
+          text: "{\r
+
+            \  \"nomeServico\": \"Alinhamento e Balanceamento\",\r
+
+            \  \"tempoEstimado\": 60,\r
+
+            \  \"custoTabelado\": 250.00\r
+
+            }"
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/servicos
+        name: Listar Serviço
+        meta:
+          id: req_f91d429f335a4ad9a894a17dbcf07980
+          created: 1788026459121
+          modified: 1788026459121
+          isPrivate: false
+          description: ""
+          sortKey: -1788026456756
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/servicos/1
+        name: Buscar Serviço ID
+        meta:
+          id: req_5ffc330d195949a9b50128dd9934e13e
+          created: 1788026459122
+          modified: 1788026459122
+          isPrivate: false
+          description: ""
+          sortKey: -1788026456755
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/servicos/1
+        name: Atualizar Serviço
+        meta:
+          id: req_eff61968ccec4dc794ec7a5b3db02333
+          created: 1788026459124
+          modified: 1788027494413
+          isPrivate: false
+          description: ""
+          sortKey: -1788026456754
+        method: PUT
+        body:
+          mimeType: application/json
+          text: "{\r
+
+            \  \"nomeServico\": \"Alinhamento e Balanceamento\",\r
+
+            \  \"tempoEstimado\": 45,\r
+
+            \  \"custoTabelado\": 135.00\r
+
+            }"
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/servicos/1
+        name: Deletar Serviço
+        meta:
+          id: req_cc5b31cb626a4278a31dacb4b299f8d3
+          created: 1788026459125
+          modified: 1788026459125
+          isPrivate: false
+          description: ""
+          sortKey: -1788026456753
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Peças / API mecanicQA
+    meta:
+      id: fld_a9e0f291b01b4e3e9c2369ae4bfe9815
+      created: 1788027063345
+      modified: 1788027340099
+      sortKey: -1788027057115
+      description: |-
+        ### Welcome to Postman! This is your first collection. 
+
+        Collections are your starting point for building and testing APIs. You can use this one to:
+
+        • Group related requests
+        • Test your API in real-world scenarios
+        • Document and share your requests
+
+        Update the name and overview whenever you’re ready to make it yours.
+
+        [Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)
+    children:
+      - url: http://localhost:8080/api/pecas
+        name: Criar Peça
+        meta:
+          id: req_54040619a32e42228603ee78f9e4d91a
+          created: 1788027063350
+          modified: 1788027529772
+          isPrivate: false
+          description: ""
+          sortKey: -1788027057114
+        method: POST
+        body:
+          mimeType: application/json
+          text: "{\r
+
+            \  \"nome\": \"Filtro de Óleo\",\r
+
+            \  \"codigoDeBarras\": \"789101010\",\r
+
+            \  \"fornecedor\": \"Tecfil\",\r
+
+            \  \"qtdEstoque\": 10,\r
+
+            \  \"precoCusto\": 35.90,\r
+
+            \  \"precoVenda\": 42.00\r
+
+            \ \r
+
+            }"
+        headers:
+          - name: Content-Type
+            value: application/json
+        scripts:
+          afterResponse: |-
+            insomnia.test("Status code is 200", function () {
+                insomnia.response.to.have.status(200);
+            });
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/pecas
+        name: Listar Peças
+        meta:
+          id: req_60e6f15d6f7b46e98ea384850125e5de
+          created: 1788027063396
+          modified: 1788027516578
+          isPrivate: false
+          description: ""
+          sortKey: -1788027057113
+        method: GET
+        scripts:
+          afterResponse: |
+            insomnia.test("Successful POST request", function () {
+                insomnia.expect(insomnia.response.code).to.be.oneOf([200, 201]);
+            });
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/pecas/1
+        name: Buscar Peça ID
+        meta:
+          id: req_b9af24d7b5a34bbabdf00760c4a71020
+          created: 1788027063400
+          modified: 1788027483118
+          isPrivate: false
+          description: ""
+          sortKey: -1788027057112
+        method: GET
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/pecas/1
+        name: Atualizar Peça
+        meta:
+          id: req_9a4fa23749424b5795ec4cae6de2bbd2
+          created: 1788027063405
+          modified: 1788027063405
+          isPrivate: false
+          description: ""
+          sortKey: -1788027057111
+        method: PUT
+        body:
+          mimeType: application/json
+          text: "{\r
+
+            \  \"nome\": \"Filtro de Óleo\",\r
+
+            \  \"codigoDeBarras\": \"789101010\",\r
+
+            \  \"fornecedor\": \"Tecfil\",\r
+
+            \  \"qtdEstoque\": 7,\r
+
+            \  \"precoCusto\": 35.90,\r
+
+            \  \"precoVenda\": 48.00\r
+
+            \ \r
+
+            }"
+        headers:
+          - name: Content-Type
+            value: application/json
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: http://localhost:8080/api/pecas/1
+        name: Deletar Peça
+        meta:
+          id: req_577a1095676e4d04b3eefebd8eaedced
+          created: 1788027063407
+          modified: 1788027536151
+          isPrivate: false
+          description: ""
+          sortKey: -1788027057110
+        method: DELETE
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_c3de84ffbd914bb5b872a9c67aec3537
+    created: 1788026459128
+    modified: 1788027171569
+environments:
+  name: Base Environment
+  meta:
+    id: env_554aee913fa544d6bf0a059eea2a611b
+    created: 1788026459126
+    modified: 1788027171570
+    isPrivate: false
