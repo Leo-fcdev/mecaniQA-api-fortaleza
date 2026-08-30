@@ -1,4 +1,4 @@
-package br.com.mecaniQA.api.controlllers;
+package br.com.mecaniQA.api.controllers;
 
 import br.com.mecaniQA.api.models.Peca;
 import br.com.mecaniQA.api.repositories.PecaRepository;
