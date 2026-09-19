@@ -16,92 +16,110 @@ public class OrdemServico {
     private double valorTotal;
     private double desconto;
 
-    public OrdemServico() {
-        this.servicos = new ArrayList<>();
-        this.pecas = new ArrayList<>();
+    private OrdemServico(OrdemServicoBuilder builder) {
+        this.id = builder.id;
+        this.idCliente = builder.idCliente;
+        this.dataAbertura = builder.dataAbertura;
+        this.dataFechamento = builder.dataFechamento;
+        this.status = builder.status;
+        this.servicos = builder.servicos != null ? builder.servicos : new ArrayList<>();
+        this.pecas = builder.pecas != null ? builder.pecas : new ArrayList<>();
+        this.valorTotal = builder.valorTotal;
+        this.desconto = builder.desconto;
     }
 
-    public OrdemServico(Long id, Long idCliente, LocalDateTime dataAbertura, StatusOS status,
-                        List<Servico> servicos, List<Peca> pecas, double valorTotal, double desconto) {
-        this.id = id;
-        this.idCliente = idCliente;
-        this.dataAbertura = dataAbertura;
-        this.status = status;
-        this.servicos = servicos != null ? servicos : new ArrayList<>();
-        this.pecas = pecas != null ? pecas : new ArrayList<>();
-        this.valorTotal = valorTotal;
-        this.desconto = desconto;
+
+    public static OrdemServicoBuilder builder() {
+        return new OrdemServicoBuilder();
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getIdCliente() {
-        return idCliente;
-    }
+    public Long getIdCliente() { return idCliente; }
+    public void setIdCliente(Long idCliente) { this.idCliente = idCliente; }
 
-    public void setIdCliente(Long idCliente) {
-        this.idCliente = idCliente;
-    }
+    public LocalDateTime getDataAbertura() { return dataAbertura; }
+    public void setDataAbertura(LocalDateTime dataAbertura) { this.dataAbertura = dataAbertura; }
 
-    public LocalDateTime getDataAbertura() {
-        return dataAbertura;
-    }
+    public LocalDateTime getDataFechamento() { return dataFechamento; }
+    public void setDataFechamento(LocalDateTime dataFechamento) { this.dataFechamento = dataFechamento; }
 
-    public void setDataAbertura(LocalDateTime dataAbertura) {
-        this.dataAbertura = dataAbertura;
-    }
+    public StatusOS getStatus() { return status; }
+    public void setStatus(StatusOS status) { this.status = status; }
 
-    public LocalDateTime getDataFechamento() {
-        return dataFechamento;
-    }
+    public List<Servico> getServicos() { return servicos; }
+    public void setServicos(List<Servico> servicos) { this.servicos = servicos; }
 
-    public void setDataFechamento(LocalDateTime dataFechamento) {
-        this.dataFechamento = dataFechamento;
-    }
+    public List<Peca> getPecas() { return pecas; }
+    public void setPecas(List<Peca> pecas) { this.pecas = pecas; }
 
-    public StatusOS getStatus() {
-        return status;
-    }
+    public double getValorTotal() { return valorTotal; }
+    public void setValorTotal(double valorTotal) { this.valorTotal = valorTotal; }
 
-    public void setStatus(StatusOS status) {
-        this.status = status;
-    }
+    public double getDesconto() { return desconto; }
+    public void setDesconto(double desconto) { this.desconto = desconto; }
 
-    public List<Servico> getServicos() {
-        return servicos;
-    }
+    public static class OrdemServicoBuilder {
 
-    public void setServicos(List<Servico> servicos) {
-        this.servicos = servicos;
-    }
+        private Long id;
+        private Long idCliente;
+        private LocalDateTime dataAbertura;
+        private LocalDateTime dataFechamento;
+        private StatusOS status;
+        private List<Servico> servicos = new ArrayList<>();
+        private List<Peca> pecas = new ArrayList<>();
+        private double valorTotal;
+        private double desconto;
 
-    public List<Peca> getPecas() {
-        return pecas;
-    }
+        public OrdemServicoBuilder id(Long id) {
+            this.id = id;
+            return this;
+        }
 
-    public void setPecas(List<Peca> pecas) {
-        this.pecas = pecas;
-    }
+        public OrdemServicoBuilder idCliente(Long idCliente) {
+            this.idCliente = idCliente;
+            return this;
+        }
 
-    public double getValorTotal() {
-        return valorTotal;
-    }
+        public OrdemServicoBuilder dataAbertura(LocalDateTime dataAbertura) {
+            this.dataAbertura = dataAbertura;
+            return this;
+        }
 
-    public void setValorTotal(double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
+        public OrdemServicoBuilder dataFechamento(LocalDateTime dataFechamento) {
+            this.dataFechamento = dataFechamento;
+            return this;
+        }
 
-    public double getDesconto() {
-        return desconto;
-    }
+        public OrdemServicoBuilder status(StatusOS status) {
+            this.status = status;
+            return this;
+        }
 
-    public void setDesconto(double desconto) {
-        this.desconto = desconto;
+        public OrdemServicoBuilder servicos(List<Servico> servicos) {
+            this.servicos = servicos;
+            return this;
+        }
+
+        public OrdemServicoBuilder pecas(List<Peca> pecas) {
+            this.pecas = pecas;
+            return this;
+        }
+
+        public OrdemServicoBuilder valorTotal(double valorTotal) {
+            this.valorTotal = valorTotal;
+            return this;
+        }
+
+        public OrdemServicoBuilder desconto(double desconto) {
+            this.desconto = desconto;
+            return this;
+        }
+
+        public OrdemServico build() {
+            return new OrdemServico(this);
+        }
     }
 }
