@@ -44,6 +44,8 @@ public class Peca {
         this.categoriaPeca = categoriaPeca;
     }
 
+    public void setCodigoDeBarras(String codigoDeBarras) {this.codigoDeBarras = codigoDeBarras;}
+
     public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
