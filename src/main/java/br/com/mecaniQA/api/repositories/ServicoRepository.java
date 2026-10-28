@@ -1,76 +1,119 @@
 package br.com.mecaniQA.api.repositories;
 
+import br.com.mecaniQA.api.database.DatabaseConnection;
 import br.com.mecaniQA.api.models.Servico;
-import java.time.LocalDateTime;
+import br.com.mecaniQA.api.mappers.ServicoMapper;
+
+import java.sql.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class ServicoRepository {
+public class ServicoRepository implements Repository<Servico, Long>{
 
-    private static ServicoRepository instancia;
+    @Override
+    public Servico save(Servico servico){
+        String sql = "INSERT INTO servicos (nome_servico, tempo_estimado, custo_tabelado, data_cadastro) VALUES (?, ?, ?, NOW())";
+        try (Connection conn = DatabaseConnection.getConnection()){
+            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-    private List<Servico> servicos;
+            stmt.setString(1, servico.getNomeServico());
+            stmt.setInt(2, servico.getTempoEstimado());
+            stmt.setDouble(3, servico.getCustoTabelado());
 
-    private long contadorId = 1;
+            int affectedRows = stmt.executeUpdate();
+            if (affectedRows > 0){
+                try (ResultSet generatedKeys = stmt.getGeneratedKeys()){
+                    if (generatedKeys.next()) {
 
-    private ServicoRepository(){
-        this.servicos = new ArrayList<>();
-    }
-
-    public static ServicoRepository getInstance() {
-        if (instancia == null){
-            instancia = new ServicoRepository();
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return instancia;
-    }
-
-    //CRUD
-
-    //Create
-    public Servico salvar(Servico servico){
-        servico.setId(contadorId++);
-        servico.setDataCadastro(LocalDateTime.now());
-        servico.setDataUltimaAtualizacao(LocalDateTime.now());
-
-        this.servicos.add(servico);
         return servico;
     }
 
-    //Read
-    public List<Servico> listarTodos() {
-        return new ArrayList<>(this.servicos);
-    }
+    @Override
+    public Servico update(Servico servico){
+        String sql = "UPDATE servicos SET nome_servico = ?, tempo_estimado = ?, custo_tabelado = ?, data_ultima_atualizacao = NOW() WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    //Read
-    public Servico buscarPorId(long id){
-        return this.servicos.stream()
-                .filter(s -> s.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
+            stmt.setString(1, servico.getNomeServico());
+            stmt.setInt(2, servico.getTempoEstimado());
+            stmt.setDouble(3, servico.getCustoTabelado());
+            stmt.setLong(4, servico.getId());
 
-    //Update
-    public Servico atualizar(long id, Servico servicoAtualizado) {
-        Servico servicoExistente = buscarPorId(id);
-
-        if (servicoExistente != null) {
-            servicoExistente.setTempoEstimado(servicoAtualizado.getTempoEstimado());
-            servicoExistente.setCustoTabelado(servicoAtualizado.getCustoTabelado());
-
-            servicoExistente.setDataUltimaAtualizacao(LocalDateTime.now());
-
-            return servicoExistente;
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
-        return null;
+        return servico;
     }
 
-    //Delete
-    public boolean deletar(long id) {
-        Servico servico = buscarPorId(id);
-        if (servico != null){
-            this.servicos.remove(servico);
-            return true;
+    @Override
+    public Optional<Servico> findById(Long id) {
+        String sql = "SELECT * FROM servicos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(ServicoMapper.fromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Servico> findAll() {
+        List<Servico> servicos = new ArrayList<>();
+        String sql = "SELECT * FROM servicos";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                servicos.add(ServicoMapper.fromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return servicos;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM servicos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        String sql = "SELECT 1 FROM servicos WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
