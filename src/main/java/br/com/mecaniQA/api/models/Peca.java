@@ -98,6 +98,12 @@ public class Peca {
         this.dataUltimaAtualizacao = dataUltimaAtualizacao;
     }
 
+    public String getCor() { return cor; }
+    public void setCor(String cor) { this.cor = cor; }
+
+    public String getTamanho() { return tamanho; }
+    public void setTamanho(String tamanho) { this.tamanho = tamanho; }
+
     public Peca(Long id, String nome, String codigoDeBarras, String fornecedor, double precoVenda, double precoCusto, CategoriaPeca categoriaPeca) {
         this.id = id;
         this.nome = nome;
