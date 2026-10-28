@@ -8,6 +8,7 @@ import br.com.mecaniQA.api.models.Peca;
 import br.com.mecaniQA.api.models.PedidoPecas;
 import br.com.mecaniQA.api.models.StatusPedidoPeca;
 import br.com.mecaniQA.api.repositories.PedidoPecasRepository;
+import br.com.mecaniQA.api.services.PedidoPecasService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,54 +20,54 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/pedidos-pecas")
 public class PedidoPecasController {
 
-    private PedidoPecasRepository repository = PedidoPecasRepository.getInstance();
+    private final PedidoPecasService pedidoPecasService;
 
-    //CREATE
+    public PedidoPecasController() {
+        this.pedidoPecasService = new PedidoPecasService();
+    }
+
     @PostMapping
-    public ResponseEntity criar(@RequestBody PedidoPecasDTO dto) {
-        PedidoPecas entidade = PedidoPecasMapper.toEntity(dto);
-        PedidoPecas pedidoSalvo = repository.salvar(entidade);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(PedidoPecasMapper.toDTO(pedidoSalvo));
+    public ResponseEntity<?> salvar(@RequestBody PedidoPecasDTO pedidoPecasDTO) {
+        try {
+            PedidoPecasDTO pedidoSalvo = pedidoPecasService.salvar(pedidoPecasDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(pedidoSalvo); // 201 Created
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); // 400 Bad Request
+        }
     }
 
-    //ADICIONAR PEÇA A EXISTENTE
-    @PostMapping("/{id}/itens")
-    public ResponseEntity adicionarItens(
-            @PathVariable long id,
-            @RequestBody List<ItemPedidoPecaDTO> itensDTO) {
-
-        // Converte os DTOs de itens para Entidades antes de passar ao repositório
-        List <ItemPedidoPeca> novosItens = itensDTO.stream().map(dto -> {
-            ItemPedidoPeca item = new ItemPedidoPeca();
-            item.setQuantidade(dto.getQuantidade());
-
-            Peca peca = new Peca();
-            peca.setId(dto.getIdPeca());
-            item.setPeca(peca);
-
-            return item;
-        }).collect(Collectors.toList());
-
-        PedidoPecas pedidoAtualizado = repository.adicionarItens(id, novosItens);
-
-        if (pedidoAtualizado != null) {
-            return ResponseEntity.ok(PedidoPecasMapper.toDTO(pedidoAtualizado));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @GetMapping
+    public ResponseEntity<List<PedidoPecasDTO>> listarTodos() {
+        List<PedidoPecasDTO> pedidos = pedidoPecasService.listarTodos();
+        return ResponseEntity.ok(pedidos); // 200 OK
     }
 
-    //MODIFICAR STATUS DE PEDIDO
-    @PatchMapping("/{id}/status")
-    public ResponseEntity atualizarStatus(
-            @PathVariable long id,
-            @RequestBody StatusPedidoPeca novoStatus) {
-
-        PedidoPecas pedidoAtualizado = repository.atualizarStatus(id, novoStatus);
-
-        if (pedidoAtualizado != null) {
-            return ResponseEntity.ok(PedidoPecasMapper.toDTO(pedidoAtualizado));
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        try {
+            PedidoPecasDTO pedido = pedidoPecasService.buscarPorId(id);
+            return ResponseEntity.ok(pedido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 Not Found
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody PedidoPecasDTO pedidoPecasDTO) {
+        try {
+            PedidoPecasDTO pedidoAtualizado = pedidoPecasService.atualizar(id, pedidoPecasDTO);
+            return ResponseEntity.ok(pedidoAtualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        boolean deletado = pedidoPecasService.deletar(id);
+        if (deletado) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pedido de Peças não encontrado para exclusão.");
     }
 }

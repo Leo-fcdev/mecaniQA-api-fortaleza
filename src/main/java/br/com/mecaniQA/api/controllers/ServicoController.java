@@ -4,6 +4,7 @@ import br.com.mecaniQA.api.dtos.ServicoDTO;
 import br.com.mecaniQA.api.mappers.ServicoMapper;
 import br.com.mecaniQA.api.models.Servico;
 import br.com.mecaniQA.api.repositories.ServicoRepository;
+import br.com.mecaniQA.api.services.ServicoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,48 +16,54 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/servicos")
 public class ServicoController {
 
-    private ServicoRepository repository = ServicoRepository.getInstance();
+    private final ServicoService servicoService;
+
+    public ServicoController(){
+        this.servicoService = new ServicoService();
+    }
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody ServicoDTO servicoDTO) {
-        Servico servicoEntidade = ServicoMapper.toEntity(servicoDTO);
-        Servico servicoSalvo = repository.salvar(servicoEntidade);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ServicoMapper.toDTO(servicoSalvo));
+    public ResponseEntity<?> salvar(@RequestBody ServicoDTO servicoDTO) {
+        try {
+            ServicoDTO servicoSalvo = servicoService.salvar(servicoDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(servicoSalvo); // 201 Created
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage()); // 400 Bad Request
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<ServicoDTO>> listarTodos() {
-        List<ServicoDTO> listaDTO = repository.listarTodos().stream()
-                .map(ServicoMapper::toDTO)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(listaDTO);
+        List<ServicoDTO> servicos = servicoService.listarTodos();
+        return ResponseEntity.ok(servicos); // 200 OK
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity buscarPorId(@PathVariable long id) {
-        Servico servico = repository.buscarPorId(id);
-        if (servico != null) {
-            return ResponseEntity.ok(ServicoMapper.toDTO(servico));
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        try {
+            ServicoDTO servico = servicoService.buscarPorId(id);
+            return ResponseEntity.ok(servico);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 Not Found
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity atualizar(@PathVariable long id, @RequestBody ServicoDTO servicoDTO) {
-        Servico servicoEntidade = ServicoMapper.toEntity(servicoDTO);
-        Servico servicoAtualizado = repository.atualizar(id, servicoEntidade);
-        if (servicoAtualizado != null) {
-            return ResponseEntity.ok(ServicoMapper.toDTO(servicoAtualizado));
+    public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody ServicoDTO servicoDTO) {
+        try {
+            ServicoDTO servicoAtualizado = servicoService.atualizar(id, servicoDTO);
+            return ResponseEntity.ok(servicoAtualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deletar(@PathVariable long id) {
-        boolean deletado = repository.deletar(id);
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+        boolean deletado = servicoService.deletar(id);
         if (deletado) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build(); // 204 No Content
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Serviço não encontrado para exclusão.");
     }
 }
